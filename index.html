@@ -1,26 +1,52 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
+<!-- The doctype declaration tells the browser the version of HTML that the document is written in. -->
 <html lang="en">
+<!-- The <html> element is the root element of an HTML page, and indicates that the page is written in HTML. -->
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Sheets API Demo</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <!-- The <meta> element provides metadata about the HTML document, such as character encoding. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- This meta tag tells Internet Explorer to use the latest version of the rendering engine. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The viewport meta tag specifies how the website should be scaled on different devices. -->
+    <title>Dataset Adding & Cleaning Website</title>
+    <!-- The title element defines the title of the document, which is displayed in the browser's title bar. -->
 </head>
+ 
 <body>
-  <section id="section1">
-    <h1>Enter a sentence:</h1>
-    <input type="text" id="textbox" />
-    <button id="submit-btn">Submit</button>
-  </section>
-
-  <section id="section2" style="display: none;">
-    <h1>Choose a category:</h1>
-    <button>1-3</button>
-    <button>4-6</button>
-    <button>7-9</button>
-    <button>Offensive</button>
-  </section>
-
-  <script src="script.js"></script>
+    <h1 id="msg"></h1>
+    <!-- The <h1> element defines a heading. The id attribute creates a unique identifier for the element. -->
+    <form>
+        <input type="text" name="sentence" placeholder='Buraya bir şey yaz!'><br><br>
+        <input type="submit" id="sub">
+    </form>
+    <script>
+        let form = document.querySelector("form");
+        // The document.querySelector() method returns the first element that matches a specified CSS selector.
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // The preventDefault() method stops the form from submitting and prevents the page from refreshing.
+            document.querySelector("#sub").value = "Gönderiliyor..";
+            // Change the value of the submit button to "Submitting..." while the form is being submitted.
+            let data = new FormData(form);
+            // The FormData() method creates a new FormData object that contains the values of all the form fields.
+            fetch('https://script.google.com/macros/s/AKfycbxZioJCp76lFvt5xid3iDYCh2k1D-PKI9GJ0OP_Z6ZEyyA2xtv9rvUa8Gtx6cKz3ZK6/exec', {
+                    method: "POST",
+                    body: data
+                })
+                // The fetch() method is used to make a request to the server and retrieve data.
+                // This is an example API endpoint. Replace it with the actual URL for the API endpoint you want to use.
+                .then(res => res.text())
+                // The .then() method is used to handle the response from the server.
+                // The response is converted to text using the res.text() method.
+                .then(data => {
+                    // Thsse innerHTML property sets or returns the HTML content of an element.
+                    // Here, we are setting the content of the <h1> element to the response from the server.
+                    document.querySelector("#sub").value = "Gönder"
+                    // Change the value of the submit button back to "Submit" after the form has been submitted.
+                });
+        })
+    </script>
 </body>
+ 
 </html>
